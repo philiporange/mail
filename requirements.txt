@@ -1,0 +1,7 @@
+boto3==1.26.142
+chevron==0.14.0
+premailer==3.10.0
+python-dotenv==1.0.0
+redislite==6.2.805843
+validate-email==1.3
+loguru==0.7.0
