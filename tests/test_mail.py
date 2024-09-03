@@ -14,10 +14,10 @@ class TestMail(unittest.TestCase):
 
     def test_invalid_email(self):
         with self.assertRaises(MailException):
-            self.mail.send('invalid_email', 'Test Subject', 'Test Message')
+            self.mail.send("invalid_email", "Test Subject", "Test Message")
 
     def test_confirmation_code(self):
-        email = 'test@example.com'
+        email = "test@example.com"
         code = self.mail.send_confirmation_code(email)
 
         self.assertEqual(len(code), 6)
@@ -25,9 +25,9 @@ class TestMail(unittest.TestCase):
 
         # Verify the code
         self.assertTrue(self.mail.verify_confirmation_code(email, code))
-        self.assertFalse(self.mail.verify_confirmation_code(email, 'wrong_code'))
-        self.assertFalse(self.mail.verify_confirmation_code('wrong@email.com', code))
+        self.assertFalse(self.mail.verify_confirmation_code(email, "wrong_code"))
+        self.assertFalse(self.mail.verify_confirmation_code("wrong@email.com", code))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

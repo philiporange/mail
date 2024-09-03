@@ -24,9 +24,11 @@ TEMPLATES_DIR = Config.TEMPLATES_DIR
 class MailException(Exception):
     pass
 
+
 class Mail:
     def __init__(
-        self, redis_conn: Optional[Redis] = kv,
+        self,
+        redis_conn: Optional[Redis] = kv,
         source_addr: str = SES_SENDER,
         limits: list = LIMITS,
     ):
@@ -36,20 +38,25 @@ class Mail:
         self.templates_dir = TEMPLATES_DIR
         self.template_cache = {}
 
-        self.rate_limiter = RateLimiter(self.redis, limits)  # Example: 100/hour, 1000/day
+        self.rate_limiter = RateLimiter(
+            self.redis, limits
+        )  # Example: 100/hour, 1000/day
 
-    def send(self, to: str, subject: str, msg: Optional[str] = None, html: Optional[str] = None) -> dict:
+    def send(
+        self,
+        to: str,
+        subject: str,
+        msg: Optional[str] = None,
+        html: Optional[str] = None,
+    ) -> dict:
         if not validate_email(to):
-            raise MailException('Invalid email address')
+            raise MailException("Invalid email address")
 
         if not self.rate_limiter.check_and_consume():
             raise MailException("Rate limit exceeded")
 
         destination = {"ToAddresses": [to]}
-        message = {
-            "Subject": {"Charset": Config.CHARSET, "Data": subject},
-            "Body": {}
-        }
+        message = {"Subject": {"Charset": Config.CHARSET, "Data": subject}, "Body": {}}
 
         if html:
             message["Body"]["Html"] = {"Charset": Config.CHARSET, "Data": html}
@@ -73,12 +80,15 @@ class Mail:
 
     def build_template(self, name: str) -> str:
         if name not in self.template_cache:
-            base_html = self._load_template('base')
+            base_html = self._load_template("base")
             main_html = self._load_template(name)
-            html = chevron.render(base_html, {
-                'main': main_html,
-                'summary': '{{{ summary }}}',
-            })
+            html = chevron.render(
+                base_html,
+                {
+                    "main": main_html,
+                    "summary": "{{{ summary }}}",
+                },
+            )
             html = premailer.transform(html, preserve_handlebar_syntax=True)
             self.template_cache[name] = html
         return self.template_cache[name]
@@ -87,16 +97,18 @@ class Mail:
         path = os.path.join(self.templates_dir, f"{name}.html")
         if not os.path.isfile(path):
             raise MailException("Template doesn't exist")
-        with open(path, 'r') as fp:
+        with open(path, "r") as fp:
             return fp.read()
 
     def send_confirmation_code(self, to: str) -> str:
         code = self._generate_confirmation_code()
         self.redis.setex(f"confirmation:{to}", 3600, code)  # Store for 1 hour
-        self.send_template('confirmation', to, 'Email Confirmation', {
-            'summary': 'Confirm your email address',
-            'confirmation_code': code
-        })
+        self.send_template(
+            "confirmation",
+            to,
+            "Email Confirmation",
+            {"summary": "Confirm your email address", "confirmation_code": code},
+        )
         return code
 
     def verify_confirmation_code(self, email: str, code: str) -> bool:
@@ -108,9 +120,4 @@ class Mail:
 
     @staticmethod
     def _generate_confirmation_code() -> str:
-        return ''.join(random.choices('0123456789', k=6))
-
-
-if __name__ == "__main__":
-    mail = Mail()
-    mail.send_confirmation_code("test@philiporange.com")
+        return "".join(random.choices("0123456789", k=6))

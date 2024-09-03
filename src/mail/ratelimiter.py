@@ -3,9 +3,11 @@ from typing import List, Tuple
 
 
 class RateLimiter:
-    DB_PREFIX = 'rl'
+    DB_PREFIX = "rl"
 
-    def __init__(self, redis_conn, limits: List[Tuple[int, int]], user_id: str = 'global'):
+    def __init__(
+        self, redis_conn, limits: List[Tuple[int, int]], user_id: str = "global"
+    ):
         self.redis = redis_conn
         self.limits = limits
         self.user_id = user_id

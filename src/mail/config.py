@@ -18,8 +18,8 @@ if not SES_SENDER or not SES_REGION:
 KV_PATH = "kv.db"
 CHARSET = "UTF-8"
 MAX_EMAILS = 2000
-TEMPLATES_DIR = os.path.join(SRC_DIR, 'templates')
-LIMITS = [(3600, 20), (86400, 100)]     # 20/hour, 100/day
+TEMPLATES_DIR = os.path.join(SRC_DIR, "templates")
+LIMITS = [(3600, 20), (86400, 100)]  # 20/hour, 100/day
 
 LOG_PATH = "mail.log"
 LOG_ROTATION = "1 week"
