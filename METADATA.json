@@ -1,0 +1,84 @@
+{
+  "name": "Mail",
+  "short_description": "Python email sending system with AWS SES integration, rate limiting, templating, and confirmation codes.",
+  "long_description": "Mail is a Python-based email sending system that leverages AWS Simple Email Service (SES) to deliver emails reliably. It provides built-in rate limiting to prevent abuse, HTML templating with Mustache support, email validation, and confirmation code generation for email verification workflows. The system uses Redis for state management (rate limiting tracking and confirmation code storage), structured logging with loguru, and configurable rate limits. It's designed to be simple to use while providing enterprise-grade features like rate limiting per time window, HTML email support with CSS inlining, and template caching.",
+  "keywords": [
+    "email-sending",
+    "aws-ses",
+    "rate-limiting",
+    "html-templates",
+    "email-verification",
+    "confirmation-codes",
+    "python",
+    "api-library",
+    "redis",
+    "email-client",
+    "mustache-templates",
+    "email-validation"
+  ],
+  "primary_language": "Python",
+  "languages": [
+    "Python",
+    "HTML"
+  ],
+  "frameworks": [
+    "boto3",
+    "chevron",
+    "premailer",
+    "python-dotenv",
+    "redislite",
+    "loguru"
+  ],
+  "modules": [
+    {
+      "path": "src/mail/mail.py",
+      "description": "Core Mail class providing email sending, templating, and confirmation code functionality via AWS SES."
+    },
+    {
+      "path": "src/mail/ratelimiter.py",
+      "description": "Rate limiting implementation supporting multiple time windows (e.g., per-hour and per-day limits) with Redis backend."
+    },
+    {
+      "path": "src/mail/config.py",
+      "description": "Configuration management loading environment variables for AWS SES credentials, file paths, and rate limit settings."
+    },
+    {
+      "path": "src/mail/db.py",
+      "description": "Redis connection initialization using redislite for key-value storage of rate limits and confirmation codes."
+    },
+    {
+      "path": "src/mail/logging.py",
+      "description": "Logging setup using loguru with file rotation, retention policies, and configurable log levels."
+    },
+    {
+      "path": "src/mail/templates/base.html",
+      "description": "Base HTML email template providing layout and styling for all templated emails."
+    },
+    {
+      "path": "src/mail/templates/confirmation.html",
+      "description": "Email confirmation template for sending email verification codes to recipients."
+    },
+    {
+      "path": "tests/test_mail.py",
+      "description": "Unit tests for Mail class covering email validation, confirmation code generation, and verification."
+    },
+    {
+      "path": "tests/test_ratelimiter.py",
+      "description": "Unit tests for RateLimiter class covering limit enforcement, window resets, and multi-user isolation."
+    }
+  ],
+  "git": {
+    "is_repo": true,
+    "remote_url": "https://github.com/philiporange/mail.git",
+    "github_name": "philiporange/mail",
+    "default_branch": "main",
+    "last_commit": "2024-09-03T10:03:43+01:00"
+  },
+  "stats": {
+    "files": 15,
+    "lines_of_code": 339,
+    "size_bytes": 56666
+  },
+  "generated_at": "2025-12-06T23:24:17.175256",
+  "generator_version": "1.0.0"
+}
