@@ -66,19 +66,5 @@
       "path": "tests/test_ratelimiter.py",
       "description": "Unit tests for RateLimiter class covering limit enforcement, window resets, and multi-user isolation."
     }
-  ],
-  "git": {
-    "is_repo": true,
-    "remote_url": "https://github.com/philiporange/mail.git",
-    "github_name": "philiporange/mail",
-    "default_branch": "main",
-    "last_commit": "2024-09-03T10:03:43+01:00"
-  },
-  "stats": {
-    "files": 15,
-    "lines_of_code": 339,
-    "size_bytes": 56666
-  },
-  "generated_at": "2025-12-06T23:24:17.175256",
-  "generator_version": "1.0.0"
+  ]
 }
